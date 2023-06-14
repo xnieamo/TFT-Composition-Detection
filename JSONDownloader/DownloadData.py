@@ -26,6 +26,7 @@ def get_current_version():
 
 def update_data():
     if has_update():
+        print("New data available")
         url = "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
         response = requests.get(url)
         if response.status_code == 200:
@@ -35,6 +36,5 @@ def update_data():
             abs_file_path = os.path.join(script_dir, rel_path)
             with open(abs_file_path, "w") as f:
                 json.dump(data, f, indent=4)
+            print("Data updated")
 
-
-print(update_data())
