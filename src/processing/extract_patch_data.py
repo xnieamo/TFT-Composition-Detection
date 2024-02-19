@@ -15,14 +15,20 @@ SET = 10
 db = sqlite3.connect(filename)
 cur = db.cursor()
 
-# The goal here is to extract all the match and player ids from the matchplayers table. This will be used to populate an intermediate file with champion, level, and item count.
+# The goal here is to extract all the match and player ids from the matchplayers table. This will be used to populate an intermediate file with champion, level, and item count. We also include placement data to run a regression model later.
 cur.execute('''
-    SELECT characterId, characterName, tier, itemCount
-    FROM matchUnits
-    INNER JOIN matches
+    SELECT matchUnits.characterId, 
+           matchUnits.characterName, 
+           matchUnits.tier,     
+           matchUnits.itemCount,
+           matchPlayers.placement
+    FROM matches
+    INNER JOIN matchPlayers
+        ON matchplayers.matchid = matches.id and matchplayers.puuid = matchunits.puuid
+    INNER JOIN matchUnits
         ON matchUnits.matchId = matches.id
-        WHERE matches.gameVersion LIKE ? AND matches.tftSetNumber = ?
-''',('%'+PATCH_VERSION+'%', SET))
+    WHERE matches.gameVersion LIKE ? AND matches.tftSetNumber = ?
+''',(PATCH_VERSION+'%', SET))
 
 
 
@@ -33,13 +39,13 @@ match_data = cur.fetchall()
 # print(match_data)
 
 # Create a dataframe from the data
-df = pd.DataFrame(match_data, columns=["characterId", "characterName", "tier", "itemCount"])
+df = pd.DataFrame(match_data, columns=["characterId", "characterName", "tier", "itemCount", "placement"])
 
 # Print the dataframe
 # print(df)
 
 # Save the dataframe to a csv file
-df.to_csv(os.path.join(dirname,'../../Data/Intermediate/matchUnits.csv'), index=False)
+df.to_csv(os.path.join(dirname,'../../Data/Intermediate/matchUnits.csv'),       index=False)    
 
 # Close the database
 db.close()
