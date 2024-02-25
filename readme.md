@@ -18,8 +18,15 @@ Identifying comps
     - Approach
     - Comparison to tactics.tools
     - insights
+        - low global structure leaves merges similar comps (excecutioner's) and 
+          you lose fine grain information (vex vs samira carry)
+        - not enough distance focuses too much on single clusters of comps -> this
+          happens because we used binary vectors so strong overlapping units result in 100% appearance
 Upgrades and items effects on placement
     - Approach
+        - Use heartsteal as example bc most data and most diverse distribution of champs
+        - fit logistic regression to identify factors that are most important -> cluster 0
+        - binarize outcomes to top4 and bot4
     - insights
 Individual player advice
     - Approach

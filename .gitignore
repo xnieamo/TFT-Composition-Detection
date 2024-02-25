@@ -1,5 +1,7 @@
 Data/content-metadata.json
 Data/en_us.json
+Data/Processed/compUnits.txt
+Data/Processed/compUnits_20_05.txt
 *.exe
 *.db
 *.json
