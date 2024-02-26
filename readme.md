@@ -28,7 +28,13 @@ Upgrades and items effects on placement
         - fit logistic regression to identify factors that are most important -> cluster 0
         - binarize outcomes to top4 and bot4
     - insights
+        - Logistic regression, ROC
+        - Similar performance to a linear SVM
+        - Crowd divers best
+        - When fit over all data, twitch/pantheon emerges as very strong
 Individual player advice
     - Approach
+
     - Insights
+
 Conclusions
