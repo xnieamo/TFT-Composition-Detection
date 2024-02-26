@@ -34,7 +34,9 @@ Upgrades and items effects on placement
         - When fit over all data, twitch/pantheon emerges as very strong
 Individual player advice
     - Approach
-
+        - Assume a simple strategy for patch is to match play rate to highest coefs
+        - use 3 examples (first, middle, last)
+        - scatter all players by unit similarity, comp similarty, size with lp
     - Insights
 
 Conclusions
