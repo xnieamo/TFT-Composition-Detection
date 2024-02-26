@@ -23,6 +23,11 @@ def main():
                             for i in range(len(reset_indexes))]
     placement_df = pd.DataFrame(placement, columns=['placement'])
 
+    # Get puuid for each composition
+    puuid = [df.loc[reset_indexes[i], 'puuid']
+                            for i in range(len(reset_indexes))]
+    puuid_df = pd.DataFrame(puuid, columns=['puuid'])
+ 
     # Get unique names 
     unique_names = list(set(df['characterName']))
 
@@ -70,7 +75,7 @@ def main():
         store.put('unit_tier', unit_tier)
         store.put('unit_item_count', unit_item_count)
         store.put('placement', placement_df)
-    
+        store.put('puuid', puuid_df)
     
 
 # Function to group data by reset index

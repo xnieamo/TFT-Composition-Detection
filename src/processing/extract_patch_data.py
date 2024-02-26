@@ -17,7 +17,8 @@ cur = db.cursor()
 
 # The goal here is to extract all the match and player ids from the matchplayers table. This will be used to populate an intermediate file with champion, level, and item count. We also include placement data to run a regression model later.
 cur.execute('''
-    SELECT matchUnits.characterId, 
+    SELECT matchunits.puuid,
+           matchUnits.characterId, 
            matchUnits.characterName, 
            matchUnits.tier,     
            matchUnits.itemCount,
@@ -39,7 +40,7 @@ match_data = cur.fetchall()
 # print(match_data)
 
 # Create a dataframe from the data
-df = pd.DataFrame(match_data, columns=["characterId", "characterName", "tier", "itemCount", "placement"])
+df = pd.DataFrame(match_data, columns=["puuid","characterId", "characterName", "tier", "itemCount", "placement"])
 
 # Print the dataframe
 # print(df)

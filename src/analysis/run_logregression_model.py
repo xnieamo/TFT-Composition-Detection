@@ -19,6 +19,10 @@ with pd.HDFStore(filename,'r') as store:
     placement = store.get('placement')
     umap_labels = store.get('umap_labels')
 
+# Print average placement for each unique cluster label
+print(placement.groupby(umap_labels['labels']).mean())
+    
+
 #  Keep data where cluster id is 0
 clusterIdx = umap_labels['labels'] > -1
 unit_presence = unit_presence[clusterIdx]
@@ -39,12 +43,6 @@ logreg.fit(unit_presence, placement)
 # logreg.fit(unit_tier, placement)
 # logreg.fit(unit_item_count, placement)
 
-# Print accuracy
-print(logreg.score(unit_presence, placement))
-
-# Print the coefficients with unit labels
-print(logreg.coef_)
-print(unit_presence.columns)
 
 # Print top 5 units with the highest coefficients
 i = logreg.coef_.argsort()[:,:][0]
