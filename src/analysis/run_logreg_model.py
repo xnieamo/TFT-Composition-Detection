@@ -22,18 +22,14 @@ with pd.HDFStore(filename,'r') as store:
 
 # Get a count of occurrences of the unique puuid
 puuid_counts = puuids['puuid'].value_counts()
-print(umap_labels.head(10))
+
 
 #  Keep data where cluster id is 0
-clusterIdx = umap_labels['labels'] > -1
+clusterIdx = umap_labels['labels'] >= -1
 unit_presence = unit_presence[clusterIdx]
 unit_tier = unit_tier[clusterIdx]
 unit_item_count = unit_item_count[clusterIdx]
 placement = placement[clusterIdx]
-
-# Print average placement for each unique cluster label -> THIS SHOULD BE A REGRESSION FIT AS WELL
-mean_placement = placement.groupby(umap_labels['labels']).mean().sort_values(by='placement')
-print((4.5-mean_placement).clip(0,4.5))
 
 
 # Binarize the placement data
@@ -63,37 +59,42 @@ coefs_df = pd.DataFrame({'unit':unit_presence.columns[i_f],'coefs':np.exp(coefs[
 # Plot relative coeff values with columns as x-axis
 fig = plt.figure()
 ax = fig.add_subplot(111)
-plt.bar(np.arange(len(unit_presence.columns)),np.exp(coefs[i_f])/np.max(np.exp(coefs[i_f])))
+# plt.bar(np.arange(len(unit_presence.columns)),np.exp(coefs[i_f])/np.max(np.exp(coefs[i_f])))
+barlist =plt.bar(np.arange(len(unit_presence.columns)),coefs[i_f])
+# [barlist[i].set_color('#ff7f0e') for i in [1,2]]
+# [barlist[i].set_color('#9467bd') for i in [13,14]]
+# [barlist[i].set_color('#7f7f7f') for i in [59]]
 plt.xticks(rotation=75)
 ax.set_xticks(np.arange(len(unit_presence.columns)))
 ax.set_xticklabels(unit_presence.columns[i_f])
-# plt.show()
+plt.ylabel('Coefficients')
+plt.title('Effect of unit presence on placement')
+plt.show()
 
 # Save coefficients to a h5 file
-with pd.HDFStore(filename, 'a', complevel=9, complib='blosc') as store:
-    # Remove existing label if it exists
-    if 'logreg_coefs' in store.keys():
-        store.remove('logreg_coefs')
-    # Save the new label
-    store.put('logreg_coefs', coefs_df)
+# with pd.HDFStore(filename, 'a', complevel=9, complib='blosc') as store:
+#     # Remove existing label if it exists
+#     if 'logreg_coefs' in store.keys():
+#         store.remove('logreg_coefs')
+#     # Save the new label
+#     store.put('logreg_coefs', coefs_df)
 
 
-# Plot ROC curve
-# y_pred = logreg.predict(unit_presence)
-# fpr, tpr,_ = roc_curve(placement, y_pred)
-# auc = roc_auc_score(placement, y_pred)
-# plt.plot(fpr, tpr, label="auc="+str(auc))
-# plt.legend(loc=4)
-# plt.show()
+# Plot ROC curve for regression
+plt.figure()
+y_pred = logreg.predict(unit_presence)
+fpr, tpr,_ = roc_curve(placement, y_pred)
+auc = roc_auc_score(placement, y_pred)
+plt.plot(fpr, tpr, label="auc="+str(auc))
+plt.legend(loc=4)
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Unit presence ROC Curve')
+plt.show()
 
 # Fit a SVM model
 # clf = svm.SVC(kernel='linear')
 # clf.fit(unit_presence, placement)
-
-
-# i = clf.coef_.argsort()[:,1:10][0]
-# print(clf.coef_[0][i])
-# print(unit_presence.columns[i])
 
 
 # # plot auc
@@ -102,5 +103,8 @@ with pd.HDFStore(filename, 'a', complevel=9, complib='blosc') as store:
 # auc = roc_auc_score(placement, y_pred)
 # plt.plot(fpr, tpr, label="auc="+str(auc))
 # plt.legend(loc=4)
+# plt.xlabel('False Positive Rate')
+# plt.ylabel('True Positive Rate')
+# plt.title('Unit presence ROC Curve SVM')
 # plt.show()
 
