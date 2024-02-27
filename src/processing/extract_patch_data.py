@@ -49,4 +49,4 @@ df = pd.DataFrame(match_data, columns=["puuid","characterId", "characterName", "
 df.to_csv(os.path.join(dirname,'../../Data/Intermediate/matchUnits.csv'),       index=False)    
 
 # Close the database
-db.close()
+db.close() 
