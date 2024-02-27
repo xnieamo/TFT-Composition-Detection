@@ -5,3 +5,4 @@ Data/Processed/compUnits_20_05.txt
 *.exe
 *.db
 *.json
+*.csv
