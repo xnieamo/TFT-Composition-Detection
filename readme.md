@@ -95,15 +95,31 @@ parameters not explored.
 | TFT10_Akali_TrueDamage |    0.202741 | 0.313421 |
 </td></tr></table>
 
-## Effect of units, upgrades, and items on placement
+## Effect of units, tier, and items on placement
 ### Approach
-
+Outcomes in a game of TFT is measured by your placement out of 8 players. The top 4 players are considered "winners". Therefore, we will binarize
+out placement data for each composition. Then, to analyze the specific effects of units, tier of units, and number of items on units, we fit a 
+logistic regression model to the data. We will do the analysis for the largest cluster first, and then repeat it using the whole data set.
 
 ### Insights
-        - Logistic regression, ROC
-        - Similar performance to a linear SVM
-        - Crowd divers best
-        - When fit over all data, twitch/pantheon emerges as very strong
+We can evaluate our model using a ROC curve [[3]][ROC]. The simple interpretation of such a plot is that the closer to the diagonal, the worse the model fit.
+We see below that while unit presence does an okay job at predicting outcomes, unit tier and item count seem completely unrelated. This indicates that there
+is little difference in the rate of upgrading units and which units get itemized between players. However, **the choice of units** is different enough to provide some insight 
+to an optimal game strategy. 
+
+![ROC_pres](/Data/Figures/UnitPresence_ROC.png)![ROC_tier](/Data/Figures/UnitTier_ROC.png)![ROC_item](/Data/Figures/UnitItems_ROC.png)
+
+We plot the coefficients of each unit for our largest cluster to see the impact. Most of the top coefficients belong to strong units generally
+acquired toward the end of the game, a confound due placement being determine by how long you survive. However, we also see 4 accessible units with the Crowd-diver
+trait in the top 10 coefficients. This indicates that for this particular comp, you want to try playing these units.
+
+![Cluster0](/Data/Figures/Comp0_coeffs.png)
+
+What if we were to fit a model over all the data? Below, we see that two of the strongest predictors are Twitch and Pantheon (orange)! We would have missed 
+this comp earlier if we set our `n_neighbors` too low. Additionally, Pentakill units Kayle and Viego (purple) as emerge as high value plays across the entire data.
+![Cluster0](/Data/Figures/CompAll_coeffs.png)
+
+
 ## Insight into individual players
 WIP: While most of the analysis is done, writing takes time! Check back in a few days
 from now (02/26/2024)
@@ -112,8 +128,10 @@ from now (02/26/2024)
 
 ## References
 [1] https://umap-learn.readthedocs.io/en/latest/  \
-[2] https://pair-code.github.io/understanding-umap/
+[2] https://pair-code.github.io/understanding-umap/ \
+[3] https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
 
 
 [UMAP_ref]:https://umap-learn.readthedocs.io/en/latest/
 [UMAP_dist_ref]: https://pair-code.github.io/understanding-umap/
+[ROC]:https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
