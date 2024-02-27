@@ -22,7 +22,6 @@ with pd.HDFStore(filename,'r') as store:
 # Fit HDBSCAN to the umap coordinates
 hdbscan_obj = HDBSCAN(min_cluster_size=200, min_samples=100).fit(umap_coords)
 hdbscan_labels = pd.DataFrame(hdbscan_obj.labels_, columns=['labels'])
-print(hdbscan_labels['labels'].unique())
 
 # Save umap labels to compAnalysis.h5
 savefilename = os.path.join(dirname, '../../Data/Processed/compAnalysis.h5')
@@ -33,6 +32,7 @@ with pd.HDFStore(savefilename, 'a', complevel=9, complib='blosc') as store:
 
     # Save the new label
     store.put('umap_labels', hdbscan_labels)
+
 
 # Keep coords where labels are not -1
 clusterIdx = hdbscan_labels['labels'] > -1
@@ -62,14 +62,10 @@ with open(writefilename, 'w') as file:
         file.write(str(label)+", cluster size: "+str(sum(hdbscan_labels['labels'] == label))+'\n')
         file.write(cluster.nlargest(10, 'play rate').to_markdown()+'\n\n')
 
-        # Print top 10 values of the mean cluster
-        print(str(label)+", cluster size: "+str(sum(hdbscan_labels['labels'] == label)))
-        print(cluster.nlargest(10, 'play rate').to_markdown())
-    
 
 # Plot
-# plt.scatter(umap_coords['x'], umap_coords['y'],c=hdbscan_labels['labels'],cmap='hsv')
-# plt.xlabel('UMAP Component 1')
-# plt.ylabel('UMAP Component 2')
-# plt.title('UMAP Visualization of Grouped Data')
-# plt.show()
+plt.scatter(umap_coords['x'], umap_coords['y'],c=hdbscan_labels['labels'],cmap='hsv')
+plt.xlabel('UMAP Component 1')
+plt.ylabel('UMAP Component 2')
+plt.title('UMAP Visualization of Grouped Data')
+plt.show()

@@ -22,7 +22,7 @@ with pd.HDFStore(filename,'r') as store:
 
 # Get a count of occurrences of the unique puuid
 puuid_counts = puuids['puuid'].value_counts()
-print(puuid_counts.unique())
+print(umap_labels.head(10))
 
 #  Keep data where cluster id is 0
 clusterIdx = umap_labels['labels'] > -1
