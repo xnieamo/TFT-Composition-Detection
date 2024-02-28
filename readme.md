@@ -121,10 +121,35 @@ this comp earlier if we set our `n_neighbors` too low. Additionally, Pentakill u
 
 
 ## Insight into individual players
-WIP: While most of the analysis is done, writing takes time! Check back in a few days
-from now (02/26/2024)
+### Approach
+While identifying trends in the playerbase is important to understand the meta and strategies that are most likely to be successful, it 
+is also vital to understand each individual's playstyle. This allows players to review the progress they've made when trying to implement new strategies
+and remove bias from evaluating flaws in their game. One way to approach this is to compare the players play rate of champions against the coefficients
+from our logistic regression. We normalize the coefficients so that they sum up to 1, representing a theoretical play rate. Additionally, we can also 
+calculate the similarity between the coefficient derived play rates and the player's. We'll use a cosine similarity here because we care more about directionality than
+a measure of absolute difference.
+
+### Insights
+Below is a plot of the rank 1 player's playrate (orange, purple, grey) at the time this data was collected ploted against the coefficient playrates (blue). We notice
+that while this player is successfully utilizing units like Kayle and Viego (purple) they may be overindexing on TD Akali and Thresh (grey). Additionally, while the comparison
+also suggests leaning more into Twitch and Pantheon, that specific comp requires conditions that may be hard to activate. A more detailed analysis of the compositions
+that included other information like augments may help tease this effect out.
+
+![Rank1](/Data/Figures/Rank1_histogram.png)
+
+In the next figure, we are plotting the dot product of player play unit and comp play rates with the population data. Players with more than 1400 LP are represented with larger 
+circles. This visualization indicates that top players will lean more towards good units and good comps (not surprising). However, note that playing the best comps is not necessarily required to be at the top of the rankings, as only 2 large circles are above 0.3 on the y-axis.
+
+![DotScatter](/Data/Figures/DotProducts.png)
 
 ## Conclusions
+The code and write-up in this repo serve as a fairly cursory overview of some analytical techniques that can be used to think about player strategies
+in TFT. While the clutering method for identifying team comps is interesting, it is also something that most stat sites already implement in one 
+way or another. However, I do believe that analytics sites would benefit from utilizing regression based models of units and specific items instead of 
+just presenting averages as that would allow for consideration of confounds, such as relative LP of the lobby. Finally, limitations based on sample size as well as
+demand may affect the development of individualized analytics, but such tools will surely help improve skill development of the playerbase. My goal will be to
+further develop some of these metrics and eventually launch a site tailored around provide players detailed insights into their playstyles. With luck, I'll be able
+to launch a beta product by or slightly after Set 11 release, so stayed tuned for more!
 
 ## References
 [1] https://umap-learn.readthedocs.io/en/latest/  \
