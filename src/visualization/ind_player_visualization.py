@@ -79,9 +79,9 @@ for puuid in puuids_lp_df['puuid']:
     dot_product = np.dot(norm_champ_play_rate.T, norm_log_coeffs)   
     champ_dot_products.append(dot_product[0][0])
 
-    # Check lp of player
+    # Keep play rate of top 10 players
     this_lp = puuids_lp_df.loc[puuids_lp_df['puuid'] == puuid]['lp']
-    if this_lp.values[0] == puuids_lp_df['lp'].nlargest(8).values[-1]:
+    if this_lp.values[0] == puuids_lp_df['lp'].nlargest(10).values[0]:
         plot_play_rate = norm_champ_play_rate
 
 
@@ -100,18 +100,20 @@ x = np.arange(norm_champ_play_rate.shape[0])
 fig = plt.figure()
 ax = fig.add_subplot(111)
 plt.bar(x,norm_log_coeffs['coefs'],alpha=0.75)
-plt.bar(x,plot_play_rate['play rate'],alpha=0.75)
+barlist = plt.bar(x,plot_play_rate['play rate'],alpha=0.75)
+[barlist[i].set_color('#9467bd') for i in [12,14]]
+[barlist[i].set_color('#7f7f7f') for i in [-14,-15]]
 plt.xlabel('Dot Product')
 plt.ylabel('Frequency')
-plt.title('Dot Product Histogram')
+plt.title('Rank 1 Play Rate Histogram')
 plt.xticks(rotation=75)
 ax.set_xticks(x)
 ax.set_xticklabels(norm_champ_play_rate.index)
 plt.show()
 
 # Plot scatter plot of dot prodcuts with lp as size
-# plt.scatter(champ_dot_products, comp_dot_products, s=[100 if x > 1400 else 10 for x in puuids_lp_df['lp']], alpha=0.5)
-# plt.xlabel('Champ')
-# plt.ylabel('Comp')
-# plt.title('Dot Product vs LP')
-# plt.show()
+plt.scatter(champ_dot_products, comp_dot_products, s=[100 if x > 1400 else 10 for x in puuids_lp_df['lp']], alpha=0.5)
+plt.xlabel('Champ')
+plt.ylabel('Comp')
+plt.title('Dot Products of Champ and Comp Play Rate')
+plt.show()
