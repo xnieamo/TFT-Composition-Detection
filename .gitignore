@@ -6,3 +6,4 @@ Data/Processed/compUnits_20_05.txt
 *.db
 *.json
 *.csv
+__pycache__/
