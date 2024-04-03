@@ -5,7 +5,7 @@ from utils.model_utils import plot_best_model, load_data
 def main():
 
     # Load the data
-    unit_presence, placement = load_data()
+    unit_presence, placement = load_data(1)
 
     # Split the data
     X_train, X_test, y_train, y_test = train_test_split(unit_presence, placement, test_size=0.2, random_state=42)

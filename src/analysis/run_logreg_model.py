@@ -4,7 +4,7 @@ from utils.model_utils import plot_best_model, load_data
 
 
 
-unit_presence, placement = load_data()
+unit_presence, placement = load_data(0)
 
 # Split the data
 X_train, X_test, y_train, y_test = train_test_split(unit_presence, placement, test_size=0.2, random_state=42)
@@ -40,12 +40,10 @@ best_model = grid_search.best_estimator_
 plot_best_model(best_model, X_test, y_test)
 
 
-# # Print top 5 units with the highest coefficients
-# i = logreg.coef_.argsort()[:,:][0]
-# i_f = np.flip(i)
-# coefs = logreg.coef_[0]
-# print(np.exp(coefs[i]))
-# print(unit_presence.columns[i])
+# Print top 5 units with the highest coefficients
+i = best_model.coef_[0:59]
+
+
 
 # # Put the coefficients in a dataframe
 # coefs_df = pd.DataFrame({'unit':unit_presence.columns[i_f],'coefs':np.exp(coefs[i_f])/np.max(np.exp(coefs[i_f]))})

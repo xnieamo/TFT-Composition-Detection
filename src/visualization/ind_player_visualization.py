@@ -88,13 +88,7 @@ for puuid in puuids_lp_df['puuid']:
 # print(norm_champ_play_rate.head(5))
 # print(norm_log_coeffs.head(5))
 
-# # Linear regression
-# lm = LinearRegression()
-# lm.fit(np.log(puuids_lp_df['lp'].to_frame()), dot_products)
-# print(lm.coef_)
-# print(lm.intercept_)
-# print(lm.score(puuids_lp_df['lp'].to_frame(), dot_products))
-    
+
 # Plot a double histogram of the champ pla rate and the log coefficients
 x = np.arange(norm_champ_play_rate.shape[0])
 fig = plt.figure()
