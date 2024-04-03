@@ -144,7 +144,7 @@ circles. This visualization indicates that top players will lean more towards go
 
 ## Conclusions
 The code and write-up in this repo serve as a fairly cursory overview of some analytical techniques that can be used to think about player strategies
-in TFT. While the clutering method for identifying team comps is interesting, it is also something that most stat sites already implement in one 
+in TFT. While the clustering method for identifying team comps is interesting, it is also something that most stat sites already implement in one 
 way or another. However, I do believe that analytics sites would benefit from utilizing regression based models of units and specific items instead of 
 just presenting averages as that would allow for consideration of confounds, such as relative LP of the lobby. Finally, limitations based on sample size as well as
 demand may affect the development of individualized analytics, but such tools will surely help improve skill development of the playerbase. My goal will be to
